@@ -1,61 +1,58 @@
 import vtkFullScreenRenderWindow from '@kitware/vtk.js/Rendering/Misc/FullScreenRenderWindow';
 import vtkActor from '@kitware/vtk.js/Rendering/Core/Actor';
-import vtkPlaneSource from '@kitware/vtk.js/Filters/Sources/PlaneSource';
 import vtkMapper from '@kitware/vtk.js/Rendering/Core/Mapper';
-import { Representation } from '@kitware/vtk.js/Rendering/Core/Property/Constants';
+import vtkSTLReader from '@kitware/vtk.js/IO/Geometry/STLReader';
+import vtkPLYReader from '@kitware/vtk.js/IO/Geometry/PLYReader';
 
-// import controlPanel from './controlPanel.html';
+document.getElementById('file-input').addEventListener('change', (event) => {
+  const file = event.target.files[0];
 
-// ----------------------------------------------------------------------------
-// Standard rendering code setup
-// ----------------------------------------------------------------------------
+  if (file) {
+    console.log(`Selected file path: ${file.name}`);
 
-const fullScreenRenderer = vtkFullScreenRenderWindow.newInstance({
-  background: [0, 0, 0],
+    const fileReader = new FileReader();
+    fileReader.onload = function(e) {
+      const arrayBuffer = e.target.result;
+      const extension = file.name.split('.').pop().toLowerCase();
+
+      // 创建渲染窗口
+      const fullScreenRenderer = vtkFullScreenRenderWindow.newInstance({
+        background: [0, 0, 0],
+        rootContainer: document.getElementById('vtk-container'),
+      });
+      const renderer = fullScreenRenderer.getRenderer();
+      const renderWindow = fullScreenRenderer.getRenderWindow();
+
+      // 创建映射器和演员
+      const mapper = vtkMapper.newInstance();
+      const actor = vtkActor.newInstance();
+      actor.setMapper(mapper);
+      renderer.addActor(actor);
+
+      // 选择合适的读取器
+      let reader;
+      if (extension === 'stl') {
+        reader = vtkSTLReader.newInstance();
+      } else if (extension === 'ply') {
+        reader = vtkPLYReader.newInstance();
+      } else {
+        console.error('Unsupported file format');
+        return;
+      }
+
+      mapper.setInputConnection(reader.getOutputPort());
+      reader.parseAsArrayBuffer(arrayBuffer);
+
+      // 强制重新渲染页面
+      setTimeout(() => {
+        renderer.resetCamera();
+        renderWindow.render();
+        document.getElementById('vtk-container').style.display = 'block';
+
+        // 强制触发窗口大小变化事件
+        window.dispatchEvent(new Event('resize'));
+      }, 0);
+    };
+    fileReader.readAsArrayBuffer(file);
+  }
 });
-const renderer = fullScreenRenderer.getRenderer();
-const renderWindow = fullScreenRenderer.getRenderWindow();
-
-// ----------------------------------------------------------------------------
-// Example code
-// ----------------------------------------------------------------------------
-
-const planeSource = vtkPlaneSource.newInstance();
-const mapper = vtkMapper.newInstance();
-const actor = vtkActor.newInstance();
-
-actor.getProperty().setRepresentation(Representation.WIREFRAME);
-
-mapper.setInputConnection(planeSource.getOutputPort());
-actor.setMapper(mapper);
-
-renderer.addActor(actor);
-renderer.resetCamera();
-renderWindow.render();
-
-// -----------------------------------------------------------
-// UI control handling
-// -----------------------------------------------------------
-
-/*
-fullScreenRenderer.addController(controlPanel);
-
-['xResolution', 'yResolution'].forEach((propertyName) => {
-  document.querySelector(`.${propertyName}`).addEventListener('input', (e) => {
-    const value = Number(e.target.value);
-    planeSource.set({ [propertyName]: value });
-    renderWindow.render();
-  });
-});
-*/
-
-// -----------------------------------------------------------
-// Make some variables global so that you can inspect and
-// modify objects in your browser's developer console:
-// -----------------------------------------------------------
-
-global.planeSource = planeSource;
-global.mapper = mapper;
-global.actor = actor;
-global.renderer = renderer;
-global.renderWindow = renderWindow;
