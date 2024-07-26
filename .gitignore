@@ -1,2 +1,142 @@
-node_modules
-dist
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Config files
+*.sublime-project
+*.sublime-workspace
+
+# Electron specific
+/electron-builder-cache
+/.electron-vue
+/.electron-webpack
+
+# VTK.js specific
+/vtk-container
+
+# IDE specific
+.vscode
+.idea
+
+# macOS specific
+*.DS_Store
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux specific
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# Output of 'npm pack'
+*.tgz
+
+# Compiled source
+/build
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
+.env
+.env.test
+.env.production
+
+# Parcel cache
+.cache
+
+# SvelteKit
+.svelte-kit
+
+# Meteor specific
+.meteor/local
+
+# Next.js build output
+.next
+
+# Nuxt.js build output
+.nuxt
+
+# Gatsby files
+.cache/
+public/
+
+# VuePress build output
+.vuepress/dist
+
+# 11ty output
+_site
+
+# Docusaurus files
+.build
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Storybook files
+.out
+storybook-static
+
+# Gridsome cache
+.cache/
+node_modules/
+dist/
+
+# Vue.js build output
+dist/
+.vuepress/dist/
