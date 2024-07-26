@@ -6,24 +6,49 @@
   <title>3D Model Viewer</title>
   <style>
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       height: 100vh;
       margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: #f0f0f0;
+    }
+    #file-input-container {
+      text-align: center;
+    }
+    .hidden {
+      display: none;
+    }
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .full-height {
+      height: 100%;
+    }
+    .half-width {
+      width: 50%;
+      height: 100%;
     }
     #vtk-container {
       width: 100%;
       height: 100%;
+      background-color: black;
     }
   </style>
 </head>
 <body>
-  <h1>3D Model Viewer</h1>
-  <input type="file" id="file-input" accept=".stl,.ply">
-  <div id="vtk-container" style="display: none;"></div>
+  <div id="file-input-container">
+    <h1>3D Model Viewer</h1>
+    <input type="file" id="file-input" accept=".stl,.ply">
+  </div>
+  <div id="left-pane" class="hidden half-width full-height">
+    <div id="vtk-container"></div>
+  </div>
+  <div id="right-pane" class="hidden half-width full-height">
+    <p>Additional content will be displayed here.</p>
+  </div>
   <script src="dist/renderer.js"></script>
 </body>
 </html>
